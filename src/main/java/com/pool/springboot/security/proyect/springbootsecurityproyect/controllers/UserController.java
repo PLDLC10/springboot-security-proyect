@@ -3,6 +3,7 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.controlle
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +17,12 @@ public class UserController {
     @Autowired
     private UserService service;
 
-     public List<User> list(){
-        return service.finAll();
-     }
+   public List<User> list(){
+      return service.finAll();
+   }
+
+   @GetMapping("/foo")
+   public String foo(){
+      return "mensaje";
+   }
 }

@@ -2,11 +2,11 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -34,15 +34,15 @@ public class History {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User users;
 
     @ManyToMany
     @JoinTable(
-        name = "histies_tipesH",
+        name = "tipesh_histories",
         joinColumns = @JoinColumn(name = "histori_id"),
         inverseJoinColumns = @JoinColumn(name = "tipeh_id"),
         uniqueConstraints = {@UniqueConstraint(columnNames = {"histori_id", "tipeh_id"})}
     )
-    private List<TipeH> tipeHs;
+    private List<TipeH> tipesh;
 
 }

@@ -3,7 +3,6 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 import java.util.List;
 
 import org.hibernate.annotations.ManyToAny;
-import org.springframework.data.annotation.Id;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,6 +11,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
@@ -43,7 +43,7 @@ public class User {
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
     private List<Role> roles;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
     private List<Product> products;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
@@ -54,15 +54,6 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Boolean admin;
 
-    public User() {
-    }
-
-    public User(@NotBlank String username, @NotBlank String password, Boolean enable, Boolean admin) {
-        this.username = username;
-        this.password = password;
-        this.enable = enable;
-        this.admin = admin;
-    }
 
     public Long getId() {
         return id;

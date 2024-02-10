@@ -2,17 +2,17 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 
 import java.util.List;
 
-import org.springframework.data.annotation.Id;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "tipesH")
+@Table(name = "tipesh")
 public class TipeH {
 
     @Id
@@ -22,6 +22,6 @@ public class TipeH {
     @Column(unique = true)
     private String name;
 
-    @ManyToMany(mappedBy = "tipesH")
+    @ManyToMany(mappedBy = "tipesh")
     private List<History> histories;
 }

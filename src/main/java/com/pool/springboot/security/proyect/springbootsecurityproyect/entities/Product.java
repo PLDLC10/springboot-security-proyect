@@ -3,11 +3,12 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 import java.util.List;
 
 import org.hibernate.annotations.ManyToAny;
-import org.springframework.data.annotation.Id;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
@@ -41,7 +42,7 @@ public class Product {
 
     @ManyToAny
     @JoinTable(
-        name = "products_tipes",
+        name = "tipes_products",
         joinColumns = @JoinColumn(name = "tipe_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id"),
         uniqueConstraints = {@UniqueConstraint(columnNames = {"tipe_id", "product_id"})})
