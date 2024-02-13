@@ -6,4 +6,5 @@ import com.pool.springboot.security.proyect.springbootsecurityproyect.entities.U
 
 public interface UserRepository extends CrudRepository<User, Long>{
 
+    boolean existsByUsername(String username);
 }

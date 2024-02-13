@@ -9,6 +9,8 @@ public interface UserService {
 
     List<User> finAll();
 
-    User Save(User user);
+    User save(User user);
+
+    boolean existsByUsername(String username);
 
 }

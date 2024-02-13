@@ -4,7 +4,9 @@ import java.util.List;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.pool.springboot.security.proyect.springbootsecurityproyect.validations.IExistByUsername;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -15,7 +17,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 
@@ -29,12 +33,14 @@ public class User {
 
     @NotBlank
     @Column(unique = true)
+    @IExistByUsername
     private String username;
 
     @NotBlank
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"})
     @ManyToAny
     @JoinTable(
         name = "users_roles",
@@ -52,8 +58,19 @@ public class User {
     private Boolean enable;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Transient
     private Boolean admin;
 
+    @PrePersist
+    public void prePersist(){
+        enable = true;
+    }
+/* 
+ * public User() {
+        roles = new ArrayList<>();
+    }
+*/
+    
 
     public Long getId() {
         return id;

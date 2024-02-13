@@ -7,7 +7,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
+import com.pool.springboot.security.proyect.springbootsecurityproyect.security.filter.JwtAuthenticationFilter;
+import com.pool.springboot.security.proyect.springbootsecurityproyect.security.filter.JwtValidationFilter;
 
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
@@ -22,9 +27,16 @@ public class SpringSecurityConfig {
     }
 
     @Bean
+    PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http.authorizeHttpRequests((authz) -> authz
-        .anyRequest().permitAll())
+        .anyRequest().authenticated())
+        .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+        .addFilter(new JwtValidationFilter(authenticationManager()))
         .csrf(config -> config.disable())
         .build();
     }
