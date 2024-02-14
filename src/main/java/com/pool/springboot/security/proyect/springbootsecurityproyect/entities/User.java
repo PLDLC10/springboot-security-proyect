@@ -1,5 +1,6 @@
 package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.ManyToAny;
@@ -65,11 +66,11 @@ public class User {
     public void prePersist(){
         enable = true;
     }
-/* 
- * public User() {
+
+    public User() {
         roles = new ArrayList<>();
     }
-*/
+
     
 
     public Long getId() {
@@ -104,7 +105,7 @@ public class User {
         this.roles = roles;
     }
 
-    public Boolean getEnable() {
+    public boolean isEnable() {
         return enable;
     }
 

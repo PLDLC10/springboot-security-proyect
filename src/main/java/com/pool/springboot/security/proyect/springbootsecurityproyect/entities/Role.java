@@ -1,5 +1,6 @@
 package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -29,6 +30,7 @@ public class Role {
 
     
     public Role() {
+        this.users = new ArrayList<>();
     }
 
     public Role(String name) {
