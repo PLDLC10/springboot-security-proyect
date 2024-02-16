@@ -1,10 +1,12 @@
 package com.pool.springboot.security.proyect.springbootsecurityproyect.services;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +36,25 @@ public class UserServiceImpl implements UserService{
 
     @Transactional
     @Override
-    public User save(User user) {    
-        Optional<Role> opRole = roleRepository.findByName("ROLE_USER");
-        List<Role> role = new ArrayList<>();
-        opRole.ifPresent(role::add);
-        Optional<Role> opRoleAdmin = roleRepository.findByName("ROLE_ADMIN");
-        opRoleAdmin.ifPresent(role::add);
-        
+    public User save(User user) {   
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Set<Role> role = new HashSet<>();
+   
+        if (authentication !=null && user.getRole() !=null) {
+            if (authentication.getAuthorities().stream().anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"))) {
+                if (user.getRole().toUpperCase().equals("USER")) {
+                    role.add(roleRepository.findByName("ROLE_USER").orElse(null));
+                }else{
+                    role.add(roleRepository.findByName("ROLE_ADMIN").orElse(null));
+                    role.add(roleRepository.findByName("ROLE_USER").orElse(null));
+                }
+            }else{
+                role.add(roleRepository.findByName("ROLE_CLIENT").orElse(null));
+            }
+        }else{
+            role.add(roleRepository.findByName("ROLE_CLIENT").orElse(null));
+        }
+    
         user.setRoles(role);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);

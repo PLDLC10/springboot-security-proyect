@@ -1,7 +1,8 @@
 package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.ManyToAny;
 
@@ -48,7 +49,7 @@ public class User {
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id"),
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})})
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
     private List<Product> products;
@@ -62,16 +63,17 @@ public class User {
     @Transient
     private Boolean admin;
 
+    @Transient
+    private String role;
+
     @PrePersist
     public void prePersist(){
         enable = true;
     }
 
     public User() {
-        roles = new ArrayList<>();
+        roles = new HashSet<>();
     }
-
-    
 
     public Long getId() {
         return id;
@@ -97,11 +99,11 @@ public class User {
         this.password = password;
     }
 
-    public List<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 
@@ -113,11 +115,19 @@ public class User {
         this.enable = enable;
     }
 
-    public Boolean getAdmin() {
+    public Boolean isAdmin() {
         return admin;
     }
 
     public void setAdmin(Boolean admin) {
         this.admin = admin;
     }  
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 }
