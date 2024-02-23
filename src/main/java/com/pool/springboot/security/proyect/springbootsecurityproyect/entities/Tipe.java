@@ -2,6 +2,7 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,6 +23,33 @@ public class Tipe {
     @Column(unique = true)
     private String name;
 
+    @JsonIgnoreProperties({"tipes", "handler", "hibernateLazyInitializer"})
     @ManyToMany(mappedBy = "tipes")
     private List<Product> products;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    
 }

@@ -1,11 +1,11 @@
 package com.pool.springboot.security.proyect.springbootsecurityproyect.entities;
 
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.annotations.ManyToAny;
 
-import com.pool.springboot.security.proyect.springbootsecurityproyect.validations.IsExistsDb;
-import com.pool.springboot.security.proyect.springbootsecurityproyect.validations.IsRequired;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,6 +18,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 
 @Entity
@@ -31,33 +33,39 @@ public class Product {
     @NotBlank
     private String name;
 
-    @IsExistsDb
-    @IsRequired
+    //@IsExistsDb
+    //@IsRequired
+    @NotBlank
     private String sku;
 
-    @IsRequired
+    @NotNull
     private Integer price;
 
-    @IsRequired
+    @NotNull
     private Integer stock;
 
-    @IsRequired
+    @NotBlank
     private String description;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User users;
 
+    @JsonIgnoreProperties({"products", "handler", "hibernateLazyInitializer"})
     @ManyToAny
     @JoinTable(
-        name = "tipes_products",
-        joinColumns = @JoinColumn(name = "tipe_id"),
-        inverseJoinColumns = @JoinColumn(name = "product_id"),
-        uniqueConstraints = {@UniqueConstraint(columnNames = {"tipe_id", "product_id"})})
+        name = "products_tipes",
+        joinColumns = @JoinColumn(name = "product_id"),
+        inverseJoinColumns = @JoinColumn(name = "tipe_id"),
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"product_id", "tipe_id"})})
     private List<Tipe> tipes;
 
+
     @Transient
-    private String product;
+    @NotEmpty
+    private Set<String> product;
+
+
 
     public String getName() {
         return name;
@@ -115,11 +123,11 @@ public class Product {
         this.tipes = tipes;
     }
 
-    public String getProduct() {
+    public Set<String> getProduct() {
         return product;
     }
 
-    public void setProduct(String product) {
+    public void setProduct(Set<String> product) {
         this.product = product;
     }
 

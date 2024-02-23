@@ -8,4 +8,6 @@ public interface ProductRepository extends CrudRepository<Product, Long>{
 
     boolean existsBySku(String sku);
 
+    //boolean findByUser_id(Long id);
+
 }

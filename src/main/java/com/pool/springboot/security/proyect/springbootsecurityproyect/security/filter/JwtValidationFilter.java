@@ -6,6 +6,8 @@ import static com.pool.springboot.security.proyect.springbootsecurityproyect.sec
 import static com.pool.springboot.security.proyect.springbootsecurityproyect.security.TokenJwtConfig.SECRET_KEY;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -63,9 +65,15 @@ public class JwtValidationFilter extends BasicAuthenticationFilter{
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             chain.doFilter(request, response);
         } catch (Exception e) {
+            
+            StringWriter sw = new StringWriter();
+            e.printStackTrace(new PrintWriter(sw));
+            String exceptionAsString = sw.toString();
+
             Map<String, String> body = new HashMap<>();
             body.put("error", e.getMessage());
             body.put("message", "El token JWT es invalido !");
+            System.out.println(exceptionAsString);
 
             response.getWriter().write(new ObjectMapper().writeValueAsString(body));
             response.setStatus(HttpStatus.UNAUTHORIZED.value());

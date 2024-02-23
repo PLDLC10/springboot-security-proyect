@@ -3,6 +3,7 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.security;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties.Http;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,7 +45,8 @@ public class SpringSecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         return http.authorizeHttpRequests((authz) -> authz
-        .requestMatchers(HttpMethod.POST, "/api/users/foo").permitAll()
+        .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
+        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
         .anyRequest().authenticated())
         .addFilter(new JwtAuthenticationFilter(authenticationManager()))
         .addFilter(new JwtValidationFilter(authenticationManager()))

@@ -9,8 +9,8 @@ import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
 @Constraint(validatedBy = ExistsDbValidation.class)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface IsExistsDb {
 
     String message() default "ya existe!, escoja otro usk";

@@ -2,9 +2,11 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.services;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,8 +62,28 @@ public class UserServiceImpl implements UserService{
         return repository.save(user);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER', 'CLIENT')")
+    @Override
+    public Optional<User> update(Long id, User user) {
+        Optional <User> userOp = repository.findById(id);
+        if (userOp.isPresent()) {
+            User userDb = userOp.orElseThrow();
+            userDb.setUsername(user.getUsername());
+            userDb.setPassword(passwordEncoder.encode(user.getPassword()));
+            return Optional.of(repository.save(userDb));
+        }
+        return userOp;
+    }
+ @Override
+    public boolean delete(Long id) {
+        return repository.deleteUserById(id);
+    }
+    
+
     @Override
     public boolean existsByUsername(String username) {
         return repository.existsByUsername(username);
     }
+
+
 }

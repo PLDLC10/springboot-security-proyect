@@ -11,4 +11,5 @@ public interface ProductService {
     Product save(Product product);
 
     boolean existsBySku(String sku);
+    
 }

@@ -3,7 +3,9 @@ package com.pool.springboot.security.proyect.springbootsecurityproyect.validatio
 
 
 
-import org.springframework.util.StringUtils;
+
+
+
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
@@ -12,7 +14,11 @@ public class RequiredValidation implements ConstraintValidator<IsRequired, Strin
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return StringUtils.hasText(value);
+        System.out.println("value :------->"+value);
+        //return StringUtils.hasText(value);
+        return false;
+        //false el campo esta vacio
+        //true el campo tiene texto
     }
 
 }
